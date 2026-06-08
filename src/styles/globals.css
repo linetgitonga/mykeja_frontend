@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap');
+
+/* Design Tokens */
+:root {
+  /* Colors - Light Mode */
+  --color-brand-primary: #0066CC;
+  --color-brand-primary-light: #4D9FFF;
+  --color-brand-primary-dark: #0052A3;
+
+  --color-surface-primary: #F0F8FF;
+  --color-surface-white: #FFFFFF;
+  --color-surface-glass: rgba(255, 255, 255, 0.8);
+  --color-surface-glass-subtle: rgba(245, 251, 255, 0.6);
+
+  --color-accent-secondary: #00B4D8;
+  --color-accent-tertiary: #0096D1;
+
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #6B7280;
+  --color-text-disabled: #D1D5DB;
+
+  --color-border: #E0EBFF;
+  --color-border-glass: rgba(0, 102, 204, 0.15);
+
+  --color-state-error: #DC2626;
+  --color-state-success: #10B981;
+  --color-state-warning: #F59E0B;
+  --color-state-destructive: #7F1D1D;
+
+  --shadow-sm: 0 2px 8px rgba(0, 102, 204, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 102, 204, 0.1), 0 8px 24px rgba(0, 102, 204, 0.05);
+  --shadow-lg: 0 8px 32px rgba(0, 102, 204, 0.12), 0 16px 48px rgba(0, 102, 204, 0.08);
+  --shadow-xl: 0 16px 64px rgba(0, 102, 204, 0.15), 0 24px 80px rgba(0, 102, 204, 0.1);
+
+  /* Typography */
+  --font-family-display: 'Poppins', sans-serif;
+  --font-family-body: 'Inter', sans-serif;
+}
+
+/* Dark Mode Colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-brand-primary: #4D9FFF;
+    --color-brand-primary-light: #80B3FF;
+    --color-brand-primary-dark: #3A7ACC;
+
+    --color-surface-primary: #1A2332;
+    --color-surface-white: #1E2E3E;
+    --color-surface-glass: rgba(30, 46, 62, 0.8);
+    --color-surface-glass-subtle: rgba(15, 24, 32, 0.6);
+
+    --color-accent-secondary: #00D9FF;
+    --color-accent-tertiary: #00B8E6;
+
+    --color-text-primary: #F5F5F5;
+    --color-text-secondary: #A0A8B8;
+    --color-text-disabled: #4B5563;
+
+    --color-border: #2A3A4E;
+    --color-border-glass: rgba(77, 159, 255, 0.25);
+
+    --color-state-error: #FF6B6B;
+    --color-state-success: #34D399;
+    --color-state-warning: #FBBF24;
+    --color-state-destructive: #FCA5A5;
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5), 0 16px 48px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.6), 0 24px 80px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Base Styles */
+* {
+  @apply border-border-default dark:border-dark-border-default;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white dark:bg-slate-950 text-text-primary dark:text-dark-text-primary;
+  font-family: var(--font-family-body);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-display);
+  font-weight: 600;
+}
+
+/* Utility Classes */
+.glass-card {
+  @apply bg-surface-glass dark:bg-dark-surface-glass backdrop-blur-[20px] border border-border-glass dark:border-dark-border-glass rounded-md;
+}
+
+.glass-overlay {
+  @apply bg-black/40 dark:bg-black/60 backdrop-blur-[40px] rounded-lg;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-surface-primary dark:bg-slate-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-brand-primary dark:bg-brand-primary-light rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-brand-primary-dark dark:bg-brand-primary;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Touch Targets */
+button, a, input, select, textarea, [role='button'] {
+  @apply min-h-[44px] min-w-[44px];
+}
+
+/* Focus Visible */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-brand-primary;
+}
+
+/* Dark Mode Class Support */
+.dark {
+  color-scheme: dark;
+}
+
+/* Utility Classes for Common Patterns */
+.container-max {
+  @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-brand-primary to-accent-secondary bg-clip-text text-transparent;
+}
+
+.card-shadow {
+  @apply shadow-md dark:shadow-lg;
+}
+
+.transition-smooth {
+  @apply transition-all duration-300 ease-smooth;
+}
+
+/* Form Elements */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+  @apply rounded-md border border-border-default dark:border-dark-border-default bg-white dark:bg-surface-white text-text-primary dark:text-dark-text-primary placeholder:text-text-secondary dark:placeholder:text-dark-text-secondary;
+  @apply focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Link Styles */
+a {
+  @apply text-brand-primary hover:text-brand-primary-dark transition-colors;
+}
+
+a:focus-visible {
+  @apply outline-2 outline-offset-2 outline-brand-primary;
+}
+
+/* Image Optimization */
+img {
+  @apply max-w-full h-auto;
+}
+
+/* Selection Color */
+::selection {
+  @apply bg-brand-primary text-white;
+}
+
+::-moz-selection {
+  @apply bg-brand-primary text-white;
+}
