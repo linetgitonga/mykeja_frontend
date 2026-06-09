@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/Button';
-import { Card } from '@/components/Card';
-import { Input } from '@/components/Input';
-import { Badge } from '@/components/Badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Eye, EyeOff, Check } from 'lucide-react';
 
 type Role = 'tenant' | 'agent' | 'owner';
@@ -79,20 +79,20 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-primary to-accent-secondary py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary to-accent py-12 px-4">
       <div className="max-w-md mx-auto">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold font-display text-white mb-2">
+          <h1 className="text-4xl font-bold font-heading text-white mb-2">
             MyKeja
           </h1>
-          <p className="text-white/80">Join Kenya's trusted property platform</p>
+          <p className="text-white/80">Join Kenya&apos;s trusted property platform</p>
         </div>
 
         {/* Step 1: Role Selection */}
         {step === 'role' && (
-          <Card variant="glass" padding="lg">
-            <h2 className="text-heading-2 font-semibold mb-6 text-white">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-glow-lg">
+            <h2 className="text-2xl font-bold font-heading mb-6 text-white">
               What brings you here?
             </h2>
 
@@ -115,51 +115,60 @@ export default function RegisterPage() {
 
             <p className="text-center text-white/80 text-sm mt-6">
               Already have an account?{' '}
-              <Link href="/auth/login" className="text-white font-semibold hover:underline">
+              <Link href="/auth/login" className="text-white font-semibold hover:text-white/90">
                 Sign In
               </Link>
             </p>
-          </Card>
+          </div>
         )}
 
         {/* Step 2: Contact Information */}
         {step === 'contact' && (
-          <Card variant="glass" padding="lg">
-            <h2 className="text-heading-2 font-semibold mb-6 text-white">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-glow-lg">
+            <h2 className="text-2xl font-bold font-heading mb-6 text-white">
               Your Contact Information
             </h2>
 
             <div className="space-y-4 mb-6">
-              <Input
-                label="Email"
-                type="email"
-                placeholder="your@email.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
 
-              <Input
-                label="Phone"
-                type="tel"
-                placeholder="+254712345678"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="text-white">Phone</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+254712345678"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
 
-              <div>
-                <label className="block text-sm font-semibold mb-2">Password</label>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-white">Password</Label>
                 <div className="relative">
-                  <input
+                  <Input
+                    id="password"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={handlePasswordChange}
-                    className="w-full h-11 px-4 pr-10 rounded-md border border-border-default bg-white"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-text-secondary"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -171,13 +180,13 @@ export default function RegisterPage() {
                       key={level}
                       className={`h-1 flex-1 rounded-full ${
                         level <= passwordStrength
-                          ? 'bg-state-success'
-                          : 'bg-border-default'
+                          ? 'bg-success'
+                          : 'bg-white/20'
                       }`}
                     />
                   ))}
                 </div>
-                <p className="text-xs text-text-secondary mt-1">
+                <p className="text-xs text-white/70 mt-1">
                   {passwordStrength === 0 && 'Weak password'}
                   {passwordStrength === 1 && 'Fair'}
                   {passwordStrength === 2 && 'Good'}
@@ -186,24 +195,29 @@ export default function RegisterPage() {
                 </p>
               </div>
 
-              <Input
-                label="Confirm Password"
-                type="password"
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="confirm-password" className="text-white">Confirm Password</Label>
+                <Input
+                  id="confirm-password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={formData.confirmPassword}
+                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
             </div>
 
-            <label className="flex items-start gap-2 mb-6">
-              <input type="checkbox" className="mt-1" required />
-              <span className="text-sm text-white">
+            <div className="flex items-start gap-2 mb-6">
+              <Checkbox id="terms" />
+              <Label htmlFor="terms" className="text-sm text-white cursor-pointer">
                 I agree to the Terms of Service and Privacy Policy
-              </span>
-            </label>
+              </Label>
+            </div>
 
             <Button
               className="w-full mb-3"
+              size="lg"
               onClick={handleContactSubmit}
             >
               Send OTP
@@ -211,42 +225,48 @@ export default function RegisterPage() {
 
             <Button
               variant="ghost"
-              className="w-full text-white"
+              className="w-full text-white hover:text-white/90"
               onClick={() => setStep('role')}
             >
               Back
             </Button>
-          </Card>
+          </div>
         )}
 
         {/* Step 3: OTP Verification */}
         {step === 'otp' && (
-          <Card variant="glass" padding="lg">
-            <h2 className="text-heading-2 font-semibold mb-2 text-white">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-glow-lg">
+            <h2 className="text-2xl font-bold font-heading mb-2 text-white">
               Verify Your Phone
             </h2>
             <p className="text-white/80 mb-6">
-              We've sent a code to {formData.phone}
+              We&apos;ve sent a code to {formData.phone}
             </p>
 
             <div className="space-y-4 mb-6">
-              <Input
-                placeholder="000000"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.slice(0, 6))}
-                maxLength={6}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="otp" className="text-white">Enter Code</Label>
+                <Input
+                  id="otp"
+                  placeholder="000000"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.slice(0, 6))}
+                  maxLength={6}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
             </div>
 
             <p className="text-center text-white/80 text-sm mb-6">
-              Didn't receive code?{' '}
-              <button className="text-white font-semibold hover:underline">
+              Didn&apos;t receive code?{' '}
+              <button className="text-white font-semibold hover:text-white/90">
                 Resend (59s)
               </button>
             </p>
 
             <Button
               className="w-full mb-3"
+              size="lg"
               onClick={handleOtpSubmit}
             >
               Verify
@@ -254,47 +274,60 @@ export default function RegisterPage() {
 
             <Button
               variant="ghost"
-              className="w-full text-white"
+              className="w-full text-white hover:text-white/90"
               onClick={() => setStep('contact')}
             >
               Back
             </Button>
-          </Card>
+          </div>
         )}
 
         {/* Step 4: Account Setup (Agent Only) */}
         {step === 'setup' && (
-          <Card variant="glass" padding="lg">
-            <h2 className="text-heading-2 font-semibold mb-6 text-white">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-glow-lg">
+            <h2 className="text-2xl font-bold font-heading mb-6 text-white">
               Business Information
             </h2>
 
             <div className="space-y-4 mb-6">
-              <Input
-                label="Full Name"
-                placeholder="Your Name"
-                value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="fullname" className="text-white">Full Name</Label>
+                <Input
+                  id="fullname"
+                  placeholder="Your Name"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
 
-              <Input
-                label="Business Name"
-                placeholder="Your Agency Name"
-                value={formData.businessName}
-                onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="business" className="text-white">Business Name</Label>
+                <Input
+                  id="business"
+                  placeholder="Your Agency Name"
+                  value={formData.businessName}
+                  onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
 
-              <Input
-                label="Office Phone (Optional)"
-                type="tel"
-                placeholder="+254712345678"
-                value={formData.officePhone}
-                onChange={(e) => setFormData({ ...formData, officePhone: e.target.value })}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="officphone" className="text-white">Office Phone (Optional)</Label>
+                <Input
+                  id="officphone"
+                  type="tel"
+                  placeholder="+254712345678"
+                  value={formData.officePhone}
+                  onChange={(e) => setFormData({ ...formData, officePhone: e.target.value })}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
             </div>
 
             <Button
               className="w-full mb-3"
+              size="lg"
               onClick={handleAccountSetup}
             >
               Complete Registration
@@ -302,24 +335,24 @@ export default function RegisterPage() {
 
             <Button
               variant="ghost"
-              className="w-full text-white"
+              className="w-full text-white hover:text-white/90"
               onClick={() => setStep('otp')}
             >
               Back
             </Button>
-          </Card>
+          </div>
         )}
 
         {/* Step 5: Success */}
         {step === 'success' && (
-          <Card variant="glass" padding="lg" className="text-center">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-glow-lg text-center">
             <div className="mb-4">
-              <div className="w-16 h-16 bg-state-success/20 rounded-full flex items-center justify-center mx-auto">
-                <Check className="text-state-success" size={32} />
+              <div className="w-16 h-16 bg-success/20 rounded-full flex items-center justify-center mx-auto">
+                <Check className="text-success" size={32} />
               </div>
             </div>
 
-            <h2 className="text-heading-2 font-semibold mb-2 text-white">
+            <h2 className="text-2xl font-bold font-heading mb-2 text-white">
               Welcome to MyKeja!
             </h2>
 
@@ -332,14 +365,14 @@ export default function RegisterPage() {
                 "You're all set! Register your properties and start managing bookings."}
             </p>
 
-            <Button className="w-full mb-3">
+            <Button className="w-full mb-3" size="lg">
               Get Started
             </Button>
 
-            <Link href="/auth/login" className="text-white hover:underline text-sm">
+            <Link href="/" className="text-white hover:text-white/90 text-sm">
               Go to Home Page
             </Link>
-          </Card>
+          </div>
         )}
       </div>
     </div>

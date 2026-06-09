@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/Button';
-import { Card } from '@/components/Card';
-import { Input } from '@/components/Input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Eye, EyeOff } from 'lucide-react';
 
 export default function LoginPage() {
@@ -39,18 +40,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-primary to-accent-secondary py-12 px-4 flex items-center">
+    <div className="min-h-screen bg-gradient-to-br from-primary to-accent py-12 px-4 flex items-center">
       <div className="max-w-md w-full mx-auto">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold font-display text-white mb-2">
+          <h1 className="text-4xl font-bold font-heading text-white mb-2">
             MyKeja
           </h1>
           <p className="text-white/80">Welcome back</p>
         </div>
 
-        <Card variant="glass" padding="lg">
-          <h2 className="text-heading-2 font-semibold mb-6 text-white">
+        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-glow-lg">
+          <h2 className="text-2xl font-bold font-heading mb-6 text-white">
             Sign In
           </h2>
 
@@ -60,7 +61,7 @@ export default function LoginPage() {
               onClick={() => setLoginMethod('email')}
               className={`flex-1 py-2 rounded-md font-semibold transition-all ${
                 loginMethod === 'email'
-                  ? 'bg-white text-brand-primary'
+                  ? 'bg-white text-primary'
                   : 'text-white'
               }`}
             >
@@ -70,7 +71,7 @@ export default function LoginPage() {
               onClick={() => setLoginMethod('phone')}
               className={`flex-1 py-2 rounded-md font-semibold transition-all ${
                 loginMethod === 'phone'
-                  ? 'bg-white text-brand-primary'
+                  ? 'bg-white text-primary'
                   : 'text-white'
               }`}
             >
@@ -80,37 +81,46 @@ export default function LoginPage() {
 
           <div className="space-y-4 mb-6">
             {loginMethod === 'email' ? (
-              <Input
-                label="Email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
             ) : (
-              <Input
-                label="Phone"
-                type="tel"
-                placeholder="+254712345678"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="text-white">Phone</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+254712345678"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
             )}
 
-            <div>
-              <label className="block text-sm font-semibold mb-2">Password</label>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-white">Password</Label>
               <div className="relative">
-                <input
+                <Input
+                  id="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full h-11 px-4 pr-10 rounded-md border border-border-default bg-white"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 pr-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-text-secondary"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -119,33 +129,33 @@ export default function LoginPage() {
           </div>
 
           <div className="flex items-center justify-between mb-6">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="remember"
                 checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                onCheckedChange={(checked) => setRememberMe(checked as boolean)}
               />
-              <span className="text-sm text-white/80">Remember me</span>
-            </label>
+              <Label htmlFor="remember" className="text-sm text-white/80 cursor-pointer">Remember me</Label>
+            </div>
             <Link
               href="/auth/forgot-password"
-              className="text-sm text-white hover:underline"
+              className="text-sm text-white/80 hover:text-white transition-colors"
             >
               Forgot password?
             </Link>
           </div>
 
-          <Button className="w-full mb-4" onClick={handleLogin}>
+          <Button className="w-full mb-4" size="lg" onClick={handleLogin}>
             Sign In
           </Button>
 
           <p className="text-center text-white/80 text-sm">
-            Don't have an account?{' '}
-            <Link href="/auth/register" className="text-white font-semibold hover:underline">
+            Don&apos;t have an account?{' '}
+            <Link href="/auth/register" className="text-white font-semibold hover:text-white/90">
               Register
             </Link>
           </p>
-        </Card>
+        </div>
       </div>
     </div>
   );

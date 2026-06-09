@@ -1,159 +1,155 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Button } from '@/components/Button';
-import { Card } from '@/components/Card';
-import { Badge } from '@/components/Badge';
-import { Plus, Edit2, Eye, Trash2 } from 'lucide-react';
-import { formatCurrency } from '@/lib/utils';
-import { useMyListings } from '@/lib/hooks';
-import type { Property } from '@/lib/types';
+import React, { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { AgentPortalLayout } from '@/components/agent-portal-layout'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Plus, Edit2, Eye, Trash2 } from 'lucide-react'
+import { formatCurrency } from '@/lib/utils'
+
+const MOCK_LISTINGS = [
+  {
+    id: 1,
+    title: '2-Bedroom Apartment in Kahawa Sukari',
+    price: 35000,
+    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=300&h=200&fit=crop',
+    status: 'AVAILABLE',
+    views: 234,
+    bookings: 5,
+  },
+  {
+    id: 2,
+    title: 'Modern Studio in Westlands',
+    price: 38000,
+    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300&h=200&fit=crop',
+    status: 'LOCKED',
+    views: 156,
+    bookings: 2,
+  },
+  {
+    id: 3,
+    title: '3-Bedroom Townhouse in Kilimani',
+    price: 65000,
+    image: 'https://images.unsplash.com/photo-1554224311-beee415c15cb?w=300&h=200&fit=crop',
+    status: 'AVAILABLE',
+    views: 89,
+    bookings: 1,
+  },
+]
 
 export default function ListingsPage() {
-  const [filterStatus, setFilterStatus] = useState('ALL');
-  const { data: listings, isLoading } = useMyListings();
+  const [filterStatus, setFilterStatus] = useState<string>('ALL')
 
-  const filteredListings = (listings || []).filter(
+  const filteredListings = MOCK_LISTINGS.filter(
     (listing) => filterStatus === 'ALL' || listing.status === filterStatus
-  );
+  )
 
   const getStatusColor = (status: string) => {
-    if (status === 'AVAILABLE') return 'success';
-    if (status === 'LOCKED') return 'warning';
-    if (status === 'BOOKED') return 'info';
-    if (status === 'OCCUPIED') return 'default';
-    return 'error';
-  };
+    if (status === 'AVAILABLE') return 'bg-green-100 text-green-800'
+    if (status === 'LOCKED') return 'bg-yellow-100 text-yellow-800'
+    if (status === 'BOOKED') return 'bg-blue-100 text-blue-800'
+    if (status === 'OCCUPIED') return 'bg-purple-100 text-purple-800'
+    return 'bg-red-100 text-red-800'
+  }
 
   return (
-    <div className="min-h-screen bg-surface-primary dark:bg-slate-950">
-      {/* Header */}
-      <header className="bg-white dark:bg-slate-900 border-b border-border-default dark:border-dark-border-default sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-heading-2 font-bold text-text-primary dark:text-white">
-              My Listings
-            </h1>
-            <p className="text-sm text-text-secondary dark:text-dark-text-secondary">
-              {filteredListings.length} properties
-            </p>
-          </div>
-          <Link href="/agent/listings/new">
-            <Button icon={<Plus size={16} />}>New Listing</Button>
-          </Link>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Filters */}
-        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
-          {['ALL', 'AVAILABLE', 'LOCKED', 'BOOKED', 'OCCUPIED'].map((status) => (
+    <AgentPortalLayout title="My Listings" subtitle={`${filteredListings.length} active`}>
+      {/* Filter Buttons */}
+      <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+        {['ALL', 'AVAILABLE', 'LOCKED', 'BOOKED', 'OCCUPIED'].map((status) => {
+          const count = status === 'ALL' 
+            ? MOCK_LISTINGS.length 
+            : MOCK_LISTINGS.filter(l => l.status === status).length
+          
+          return (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
               className={`px-4 py-2 rounded-full font-semibold whitespace-nowrap transition-all ${
                 filterStatus === status
-                  ? 'bg-brand-primary text-white'
-                  : 'bg-white dark:bg-surface-white text-text-primary border border-border-default dark:border-dark-border-default'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-secondary text-muted-foreground hover:text-foreground'
               }`}
             >
-              {status}
+              {status} ({count})
             </button>
+          )
+        })}
+        <Link href="/agent/listings/new" className="ml-auto">
+          <Button className="gap-2">
+            <Plus size={16} />
+            <span className="hidden sm:inline">New Listing</span>
+          </Button>
+        </Link>
+      </div>
+
+      {/* Listings Table/Grid */}
+      {filteredListings.length === 0 ? (
+        <div className="glass rounded-lg p-12 text-center">
+          <h3 className="text-lg font-semibold text-foreground mb-2">No listings found</h3>
+          <p className="text-muted-foreground mb-6">Try adjusting your filters</p>
+          <Link href="/agent/listings/new">
+            <Button>Create Your First Listing</Button>
+          </Link>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredListings.map((listing) => (
+            <div
+              key={listing.id}
+              className="glass rounded-lg p-6 flex flex-col md:flex-row gap-6 hover:shadow-glow-md transition-all"
+            >
+              {/* Image */}
+              <div className="md:w-40 flex-shrink-0">
+                <Image
+                  src={listing.image}
+                  alt={listing.title}
+                  width={300}
+                  height={200}
+                  className="rounded-lg w-full h-40 object-cover"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="flex-1">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-foreground">{listing.title}</h3>
+                  <Badge className={getStatusColor(listing.status)}>
+                    {listing.status}
+                  </Badge>
+                </div>
+
+                <p className="text-2xl font-bold text-primary mb-4">
+                  {formatCurrency(listing.price)}/month
+                </p>
+
+                <div className="flex items-center gap-6 text-sm text-muted-foreground mb-4">
+                  <span>👁️ {listing.views} views</span>
+                  <span>📅 {listing.bookings} bookings</span>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2">
+                  <Button variant="secondary" size="sm" className="gap-2">
+                    <Eye size={16} />
+                    View
+                  </Button>
+                  <Button variant="secondary" size="sm" className="gap-2">
+                    <Edit2 size={16} />
+                    Edit
+                  </Button>
+                  <Button variant="destructive" size="sm" className="gap-2">
+                    <Trash2 size={16} />
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
-
-        {isLoading ? (
-          <div className="text-center py-20">Loading listings...</div>
-        ) : filteredListings.length === 0 ? (
-          <Card variant="flat" padding="lg" className="text-center">
-            <h3 className="text-heading-2 font-semibold mb-2">
-              No listings found
-            </h3>
-            <p className="text-text-secondary dark:text-dark-text-secondary mb-4">
-              Try adjusting your filters
-            </p>
-            <Link href="/agent/listings/new">
-              <Button>Create Your First Listing</Button>
-            </Link>
-          </Card>
-        ) : (
-          <div className="space-y-4">
-            {filteredListings.map((listing: Property) => {
-              const mainPhoto = listing.photos?.find(p => p.order === 0) || listing.photos?.[0];
-              const imageUrl = mainPhoto?.url || '/placeholder.svg';
-              
-              return (
-              <Card
-                key={listing.id}
-                variant="glass"
-                padding="lg"
-                className="flex flex-col md:flex-row gap-6"
-              >
-                {/* Image */}
-                <div className="md:w-40 flex-shrink-0">
-                  <Image
-                    src={imageUrl}
-                    alt={listing.title}
-                    width={300}
-                    height={200}
-                    className="rounded-lg w-full h-40 object-cover bg-muted"
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-heading-3 font-semibold text-text-primary dark:text-white">
-                      {listing.title}
-                    </h3>
-                    <Badge variant={getStatusColor(listing.status) as any}>
-                      {listing.status}
-                    </Badge>
-                  </div>
-
-                  <p className="text-text-secondary dark:text-dark-text-secondary text-sm mb-2">
-                    {listing.locationGeneral}
-                  </p>
-
-                  <p className="text-heading-3 font-bold text-brand-primary mb-4">
-                    {formatCurrency(listing.price)}/mo
-                  </p>
-
-                  <div className="flex items-center gap-4 mb-4 text-sm">
-                    <span className="text-text-secondary dark:text-dark-text-secondary">
-                      👀 {listing.views} views
-                    </span>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex gap-2">
-                    <Link href={`/properties/${listing.id}`}>
-                      <Button size="sm" variant="secondary" icon={<Eye size={14} />}>
-                        View
-                      </Button>
-                    </Link>
-                    <Link href={`/agent/listings/${listing.id}/edit`}>
-                      <Button size="sm" variant="secondary" icon={<Edit2 size={14} />}>
-                        Edit
-                      </Button>
-                    </Link>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      icon={<Trash2 size={14} />}
-                      className="text-state-error"
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            )})}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+      )}
+    </AgentPortalLayout>
+  )
 }
