@@ -7,9 +7,9 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        glass: 'bg-surface-glass backdrop-blur-[20px] border border-border-glass shadow-sm hover:shadow-md',
-        elevated: 'bg-white shadow-md hover:shadow-lg dark:bg-surface-white',
-        flat: 'bg-surface-primary dark:bg-surface-primary',
+        glass: 'glass',
+        elevated: 'bg-card shadow-md hover:shadow-lg',
+        flat: 'bg-background',
       },
       padding: {
         none: 'p-0',

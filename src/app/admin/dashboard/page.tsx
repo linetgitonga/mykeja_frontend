@@ -1,9 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/Button';
-import { Card } from '@/components/Card';
-import { Badge } from '@/components/Badge';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   Home,
   Calendar,
@@ -81,11 +80,11 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-surface-primary dark:bg-slate-950">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white dark:bg-slate-900 border-b border-border-default dark:border-dark-border-default sticky top-0 z-40">
+      <header className="border-b border-border sticky top-0 z-40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <h1 className="text-heading-2 font-bold text-text-primary dark:text-white">
+          <h1 className="text-2xl font-bold font-heading text-foreground">
             Admin Dashboard
           </h1>
         </div>
@@ -95,30 +94,28 @@ export default function AdminDashboardPage() {
         {/* Alerts */}
         <div className="space-y-3 mb-8">
           {alerts.map((alert, index) => (
-            <Card
+            <div
               key={index}
-              variant="elevated"
-              padding="lg"
-              className={`border-l-4 ${
+              className={`glass rounded-lg p-4 border-l-4 ${
                 alert.type === 'critical'
-                  ? 'border-state-error bg-red-50 dark:bg-red-900/20'
+                  ? 'border-destructive bg-destructive/10'
                   : alert.type === 'warning'
-                  ? 'border-state-warning bg-yellow-50 dark:bg-yellow-900/20'
-                  : 'border-brand-primary bg-blue-50 dark:bg-blue-900/20'
+                  ? 'border-warning bg-warning/10'
+                  : 'border-primary bg-primary/10'
               }`}
             >
               <p
                 className={`font-semibold ${
                   alert.type === 'critical'
-                    ? 'text-red-900 dark:text-red-200'
+                    ? 'text-destructive'
                     : alert.type === 'warning'
-                    ? 'text-yellow-900 dark:text-yellow-200'
-                    : 'text-blue-900 dark:text-blue-200'
+                    ? 'text-warning'
+                    : 'text-primary'
                 }`}
               >
                 {alert.message}
               </p>
-            </Card>
+            </div>
           ))}
         </div>
 
@@ -127,27 +124,27 @@ export default function AdminDashboardPage() {
           {metrics.map((metric) => {
             const Icon = metric.icon;
             return (
-              <Card key={metric.label} variant="glass" padding="lg">
+              <div key={metric.label} className="glass rounded-lg p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className={`${metric.color} p-3 rounded-lg`}>
-                    <Icon className="text-brand-primary" size={24} />
+                    <Icon className="text-primary" size={24} />
                   </div>
                 </div>
-                <p className="text-text-secondary dark:text-dark-text-secondary text-sm mb-1">
+                <p className="text-muted-foreground text-sm mb-1">
                   {metric.label}
                 </p>
-                <p className="text-heading-2 font-bold text-text-primary dark:text-white">
+                <p className="text-2xl font-bold text-foreground">
                   {metric.value}
                 </p>
-              </Card>
+              </div>
             );
           })}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Quick Access */}
-          <Card variant="glass" padding="lg">
-            <h2 className="text-heading-2 font-bold mb-4 text-text-primary dark:text-white">
+          <div className="glass rounded-lg p-6">
+            <h2 className="text-xl font-bold font-heading mb-4 text-foreground">
               Quick Access
             </h2>
             <div className="space-y-3">
@@ -167,32 +164,32 @@ export default function AdminDashboardPage() {
                 View Audit Log
               </Button>
             </div>
-          </Card>
+          </div>
 
           {/* Recent Activity */}
-          <Card variant="glass" padding="lg">
-            <h2 className="text-heading-2 font-bold mb-4 text-text-primary dark:text-white">
+          <div className="glass rounded-lg p-6">
+            <h2 className="text-xl font-bold font-heading mb-4 text-foreground">
               Recent Activity
             </h2>
             <div className="space-y-4">
               {recentActivity.map((activity, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-3 pb-4 border-b border-border-default dark:border-dark-border-default last:border-b-0"
+                  className="flex items-start gap-3 pb-4 border-b border-border last:border-b-0"
                 >
-                  <div className="w-2 h-2 rounded-full bg-brand-primary mt-2 flex-shrink-0" />
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="text-text-primary dark:text-white font-medium">
+                    <p className="text-foreground font-medium">
                       {activity.action}: <span className="font-semibold">{activity.entity}</span>
                     </p>
-                    <p className="text-xs text-text-secondary dark:text-dark-text-secondary">
+                    <p className="text-xs text-muted-foreground">
                       {activity.actor} • {activity.timestamp}
                     </p>
                   </div>
                 </div>
               ))}
             </div>
-          </Card>
+          </div>
         </div>
       </div>
     </div>

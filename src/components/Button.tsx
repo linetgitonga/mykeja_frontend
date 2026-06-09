@@ -3,14 +3,14 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-semibold transition-all duration-150 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-semibold transition-all duration-150 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
-        primary: 'bg-brand-primary text-white hover:bg-brand-primary-dark shadow-sm hover:shadow-md active:scale-95',
-        secondary: 'border-2 border-brand-primary text-brand-primary bg-transparent hover:bg-surface-primary active:scale-95',
-        ghost: 'text-brand-primary hover:text-brand-primary-dark underline bg-transparent',
-        destructive: 'bg-state-error text-white hover:bg-red-700 shadow-sm hover:shadow-md',
+        primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md active:scale-95',
+        secondary: 'border-2 border-primary text-primary bg-transparent hover:bg-background active:scale-95',
+        ghost: 'text-primary hover:text-primary/90 underline bg-transparent',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm hover:shadow-md',
       },
       size: {
         sm: 'h-9 px-3 text-xs',
